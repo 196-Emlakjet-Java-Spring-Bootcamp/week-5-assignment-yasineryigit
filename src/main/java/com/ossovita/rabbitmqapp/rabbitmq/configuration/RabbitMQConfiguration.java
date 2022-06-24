@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,18 +18,24 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfiguration {
 
     //get values from properties place holder
-    @Value("${sr.rabbit.queue.name}")
-    private String queueName;
+    @Value("${rabbitmq.queues.user-queue.name}")
+    private String userQueueName;
 
-    @Value("${sr.rabbit.exchange.name}")
+    @Value("${rabbitmq.queues.sale-advertisement-queue.name}")
+    private String saleAdvertisementQueueName;
+
+
+    @Value("${rabbitmq.exchanges.direct-exchange.name}")
     private String exchangeName;
 
-    @Value("${sr.rabbit.routing.name}")
-    private String routingName;
+    @Bean
+    Queue userQueue() {
+        return new Queue(userQueueName, false);
+    }
 
     @Bean
-    Queue queue() {
-        return new Queue(queueName, false);
+    Queue saleAdvertisementQueue() {
+        return new Queue(saleAdvertisementQueueName, false);
     }
 
     @Bean
@@ -36,10 +43,15 @@ public class RabbitMQConfiguration {
         return new DirectExchange(exchangeName);
     }
 
-    //queue'yu direct exchange'a verilen routingName ile bağlar
+    //queue'yu direct exchange'a direkt olarak bağlar
     @Bean
-    Binding binding(Queue queue, DirectExchange directExchange) {
-        return BindingBuilder.bind(queue).to(directExchange).with(routingName);
+    Binding userQueueBinding(@Qualifier("userQueue") Queue queue, DirectExchange directExchange) {
+        return BindingBuilder.bind(queue).to(directExchange).with("userRouting");
+    }
+
+    @Bean
+    Binding saleAdvertisementQueueBinding(@Qualifier("saleAdvertisementQueue") Queue queue, DirectExchange directExchange) {
+        return BindingBuilder.bind(queue).to(directExchange).with("saleAdvertisementRouting");
     }
 
     @Bean

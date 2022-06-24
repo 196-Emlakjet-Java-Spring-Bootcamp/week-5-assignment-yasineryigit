@@ -2,15 +2,21 @@ package com.ossovita.rabbitmqapp.business.abstracts;
 
 
 import com.ossovita.rabbitmqapp.core.entities.SaleAdvertisement;
-import com.ossovita.rabbitmqapp.core.entities.dto.CreateSaleAdvertisementDto;
 
 import java.util.List;
 
 public interface SaleAdvertisementService {
 
-    CreateSaleAdvertisementDto createSaleAdvertisement(CreateSaleAdvertisementDto createSaleAdvertisementDto);
+    void createDummySaleAdvertisementRequest(int piece);
 
-    List<SaleAdvertisement> getAllSaleAdvertisements();
+    void createDummySaleAdvertisement(int piece);
+
+    List<SaleAdvertisement> getSaleAdvertisementByPrice(int lb, int ub);
+
+
+    List<SaleAdvertisement> getByWord(String word);
+
+    List<SaleAdvertisement> findLatestByUserPkAndPiece(long userPk, int piece);
 
 
 }

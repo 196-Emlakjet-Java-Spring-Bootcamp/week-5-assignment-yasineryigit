@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -25,14 +26,14 @@ public class SaleAdvertisement {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "photo")
-    private String photo;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "detail_message")
-    private String detailMessage;
+    @Column(name = "price")
+    private int price;
 
-    @Column(name = "price_graph_path")
-    private String priceGraphPath;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_fk", insertable = false, updatable = false)
