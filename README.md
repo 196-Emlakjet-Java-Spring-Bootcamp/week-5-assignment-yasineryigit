@@ -1,7 +1,9 @@
-# week-3-assignment-yasineryigit
+# week-5-assignment-yasineryigit
 RabbitMQ Application
 
 - Spring Boot
+- Spring Security 
+- Opaque Token
 - RabbitMQ
 - Data JPA
 - Entity Relation
